@@ -1,0 +1,17 @@
+{
+    "userName": "yashwant.mangate@gmail.com",
+    "firstName": "yashwant",
+    "lastName": "mangate",
+    "password": "Pass@123",
+    "userId": "66461a9bc00508eaba8a7daa",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjQ2MWE5YmMwMDUwOGVhYmE4YTdkYWEiLCJpYXQiOjE3MTU4NzAzNjN9.oUEdvx85a0UWDGQNd2cxkEaibtVp94DgzKzYt3JB8Y0",
+}
+
+{
+    "userName": "sanket.mangate@gmail.com",
+    "firstName": "sanket",
+    "lastName": "mangate",
+    "password": "Pass@123",
+    "userId": "66461b45c00508eaba8a7db0",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjQ2MWI0NWMwMDUwOGVhYmE4YTdkYjAiLCJpYXQiOjE3MTU4NzA1MzN9.0MxWwsXmzqsMmA3XBxFi3fUyfx2zgLBu2bwbSBrqp0M",
+}
