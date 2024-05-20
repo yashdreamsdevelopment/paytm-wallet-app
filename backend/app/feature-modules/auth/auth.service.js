@@ -1,17 +1,16 @@
 const jwt = require("jsonwebtoken");
 
-const { JWT_SECRET } = require("../../constants/env.constants");
+// const { JWT_SECRET } = require("../../constants/env.constants");
 const userService = require("../user/user.service");
 const { USER_RESPONSE } = require("../user/user.response");
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const generateToken = (payload) => {
   return jwt.sign(payload, JWT_SECRET);
 };
 
 const verifyToken = (token) => {
-  // console.log("## TOKEN:", token);
-  // console.log("## JWT_SECRET:", JWT_SECRET);
-
   return jwt.verify(token, JWT_SECRET);
 };
 

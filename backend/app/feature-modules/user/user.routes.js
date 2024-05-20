@@ -123,25 +123,20 @@ router.get("/bulk", authMiddleware, async (req, res, next) => {
 });
 
 router.get("/generateReferral", authMiddleware, async (req, res, next) => {
-  // console.log("## GENERATING REFFERRAL ROUTE");
   try {
     const referrerUserId = req.userId;
-    // console.log("## referrerUserId:", referrerUserId);
 
     const referralCode = authService.generateToken({
       referrerUserId: referrerUserId,
     });
-    // console.log("## referralCode:", referralCode);
 
     const referralDetails = {
       referrerUserId,
       referralCode,
     };
-    // console.log("## referralDetails:", referralDetails);
 
     const result = await referralService.create(referralDetails);
 
-    // console.log("## result:", result);
     const referralLink = `http://localhost:3000/api/v1/user/signin?referredBy=${referralCode}`;
     res.status(200).send({
       success: true,
@@ -150,11 +145,8 @@ router.get("/generateReferral", authMiddleware, async (req, res, next) => {
       link: referralLink,
     });
   } catch (err) {
-    // console.log("## FOUND AN ERROR");
     next(err);
   }
-
-  // console.log(first);
 });
 
 const userRouter = new Route("/user", router);

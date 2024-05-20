@@ -8,8 +8,6 @@ const { ResponseHandler } = require("../../utility/response-handler");
 
 const router = Router();
 
-let transactionNo = 1;
-
 router.get("/health", authMiddleware, (req, res) => {
   res.status(200).send({ message: "Account router health OK" });
 });
@@ -35,47 +33,18 @@ router.post(
   authMiddleware,
   ValidateTransferReq,
   async (req, res, next) => {
-    console.log("## Transfer initiated...");
     try {
       const userId = req.userId;
       const { to, amount } = req.body;
 
-      // const account = await accountService.get({ userId });
-
-      // if (!account || account.balance < amount) {
-      //   throw ACCOUNT_RESPONSE.INSUFFICIENT_BALANCE;
-      // }
-
-      // const toAccount = await accountService.get({ userId: to });
-
-      // if (!toAccount) {
-      //   throw { ...ACCOUNT_RESPONSE.ACCOUNT_NOT_FOUND };
-      // }
-      console.log("-----------------------------");
-      console.log("## TRANSACTION NO:", transactionNo++);
-
       const result = await accountService.performTransfer(userId, to, amount);
-
-      // console.log("## result:", result);
-      console.log("-----------------------------");
-
-      // // performing transfer
-      // await accountService.update({ userId }, { $inc: { balance: -amount } });
-      // await accountService.update(
-      //   { userId: to },
-      //   { $inc: { balance: amount } }
-      // );
 
       res.status(ACCOUNT_RESPONSE.TRANSFER_SUCCESSFUL.statusCode).send({
         success: true,
         ...new ResponseHandler(ACCOUNT_RESPONSE.TRANSFER_SUCCESSFUL),
       });
     } catch (err) {
-      // TODO: FIXME: transaction is successfull still error
-      console.log("## error: ", err);
       next(err);
-    } finally {
-      console.log("## Transfer ended...");
     }
   }
 );

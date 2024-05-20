@@ -1,7 +1,6 @@
 const ReferralModel = require("../../models/referral/Referral.model");
 
 const create = (referralData) => {
-  //   console.log("## referral Data:", referralData);
   return ReferralModel.create(referralData);
 };
 

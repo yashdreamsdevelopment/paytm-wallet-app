@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
-const { MONGO_URI } = require("../constants/env.constants");
 
-const connectToMongo = async () => {
+const connectToMongo = async (uri) => {
   try {
-    await mongoose.connect(MONGO_URI);
+    await mongoose.connect(uri);
     console.log("CONNECTED TO MONGO");
     return true;
   } catch (error) {

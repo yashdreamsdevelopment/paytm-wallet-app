@@ -23,7 +23,6 @@ const ValidateSignupReqFields = (req, res, next) => {
   if (referredByToken) {
     try {
       const decoded = authService.verifyToken(referredByToken);
-      // console.log("## decoded", decoded);
       const { referrerUserId } = decoded;
 
       req.referrerUserId = referrerUserId;
