@@ -149,6 +149,22 @@ router.get("/generateReferral", authMiddleware, async (req, res, next) => {
   }
 });
 
+router.get("/:userId", authMiddleware, async (req, res, next) => {
+  const userId = req.params.userId || "";
+
+  try {
+    const result = await userService.get({ _id: userId });
+
+    if (!result) {
+      throw USER_RESPONSE.USER_INVALID;
+    }
+
+    res.status(200).send({ success: true, ...new ResponseHandler(result) });
+  } catch (err) {
+    next(err);
+  }
+});
+
 const userRouter = new Route("/user", router);
 
 module.exports = userRouter;
