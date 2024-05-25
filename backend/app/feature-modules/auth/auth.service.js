@@ -46,7 +46,7 @@ const signin = async (user) => {
 
   const token = generateToken({ userId: existingUser._id });
 
-  return { ...USER_RESPONSE.USER_SIGNEDIN, token };
+  return { ...USER_RESPONSE.USER_SIGNEDIN, token, userId: existingUser._id };
 };
 
 module.exports = {
