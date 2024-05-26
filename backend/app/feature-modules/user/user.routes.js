@@ -59,6 +59,11 @@ router.post("/signup", ValidateSignupReqFields, async (req, res, next) => {
         { referredUserId: result.userId }
       );
 
+      await accountService.update(
+        { userId: referrerUserId },
+        { $inc: { balance: 100 } }
+      );
+
       // console.log("## updated referral db");
 
       result["message"] =
