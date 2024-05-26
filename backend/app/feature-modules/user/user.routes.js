@@ -23,6 +23,7 @@ router.post("/signup", ValidateSignupReqFields, async (req, res, next) => {
   try {
     const user = req.body;
     const referrerUserId = req.referrerUserId;
+    // console.log("## referrerUserId:", referrerUserId);
 
     let referrerUser = undefined;
 
@@ -35,6 +36,8 @@ router.post("/signup", ValidateSignupReqFields, async (req, res, next) => {
           message: "not a valid referrer",
         };
       }
+
+      // console.log("## referrerUser:", referrerUser);
     }
 
     const result = await authService.register(user);
@@ -45,6 +48,8 @@ router.post("/signup", ValidateSignupReqFields, async (req, res, next) => {
       balance: !referrerUser ? 50 : 100,
     };
 
+    // console.log("## accountDetails:", accountDetails);
+
     await accountService.create(accountDetails);
 
     // update the referral db
@@ -53,6 +58,11 @@ router.post("/signup", ValidateSignupReqFields, async (req, res, next) => {
         { referrerUserId: referrerUserId },
         { referredUserId: result.userId }
       );
+
+      // console.log("## updated referral db");
+
+      result["message"] =
+        "Your Referral amount credited to your account successfully";
     }
 
     res

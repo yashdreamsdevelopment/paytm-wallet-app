@@ -9,6 +9,8 @@ const ValidateSignupReqFields = (req, res, next) => {
   const validationResp = signupBodySchema.safeParse(req.body);
   const referredByToken = req.query.referredBy || null;
 
+  // console.log("## referredByToken:", referredByToken);
+
   if (!validationResp.success) {
     const errors = validationResp.error.issues;
 
@@ -24,6 +26,7 @@ const ValidateSignupReqFields = (req, res, next) => {
     try {
       const decoded = authService.verifyToken(referredByToken);
       const { referrerUserId } = decoded;
+      // console.log("## referrerUserId:", referrerUserId);
 
       req.referrerUserId = referrerUserId;
       next();
