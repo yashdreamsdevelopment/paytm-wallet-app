@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Appbar = () => {
   const userData = useSelector((state) => state.user.userData);
@@ -25,24 +26,24 @@ const Appbar = () => {
           </div>
           {isHovered && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-              <a
-                href="/link1"
+              <Link
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                to="/referr"
               >
-                Link 1
-              </a>
-              <a
-                href="/link2"
+                Your Referrals
+              </Link>
+              <Link
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                to="/transactions"
               >
-                Link 2
-              </a>
-              <a
-                href="/link3"
+                Your Transactions
+              </Link>
+              <Link
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                to="/signout"
               >
-                Link 3
-              </a>
+                Sign Out
+              </Link>
             </div>
           )}
         </div>
