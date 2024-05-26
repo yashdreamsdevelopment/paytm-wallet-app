@@ -6,7 +6,7 @@ import InputBox from "../components/InputBox";
 import SubHeading from "../components/SubHeading";
 import Error from "../components/Error";
 import { useCreateUserMutation } from "../store/services/user/user.api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserId } from "../store/features/user/userSlice";
 import { ToastContext } from "../context/toast/ToastContext";
@@ -22,16 +22,20 @@ export const Signup = () => {
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [searchParams] = useSearchParams();
 
   const handleSubmit = async () => {
     try {
-      const payLoad = {
+      const bdata = {
         userName,
         firstName,
         lastName,
         password,
       };
-      const resp = await createUserAPI(payLoad).unwrap();
+      const referredBy = searchParams.get("referredBy");
+
+      console.log("## referredBy:", referredBy);
+      const resp = await createUserAPI({ bdata, referredBy }).unwrap();
 
       const { data } = resp;
 
