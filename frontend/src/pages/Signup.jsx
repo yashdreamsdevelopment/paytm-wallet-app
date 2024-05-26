@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import BottomWarning from "../components/BottomWarning";
 import Button from "../components/Button";
 import Heading from "../components/Heading";
@@ -9,18 +9,19 @@ import { useCreateUserMutation } from "../store/services/user/user.api";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserId } from "../store/features/user/userSlice";
+import { ToastContext } from "../context/toast/ToastContext";
 
 export const Signup = () => {
   const [createUserAPI, { isSuccess, isLoading }] = useCreateUserMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { notify } = useContext(ToastContext);
 
   // STATEs
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
 
   const handleSubmit = async () => {
     try {
@@ -32,8 +33,6 @@ export const Signup = () => {
       };
       const resp = await createUserAPI(payLoad).unwrap();
 
-      console.log("## resp:", resp);
-
       const { data } = resp;
 
       if (data.token) {
@@ -41,11 +40,26 @@ export const Signup = () => {
         dispatch(setUserId(data.userId));
 
         // NOTE: add toast here
-        navigate("/dashboard", { replace: true });
+        notify(data.message, "success");
+
+        setTimeout(() => {
+          navigate("/dashboard", { replace: true });
+        }, 500);
       }
-    } catch (error) {
-      console.log("## error:", error);
-      const { data } = error;
+    } catch (err) {
+      const { data } = err;
+
+      const formattedErrors = data.error?.formattedErrors;
+      if (formattedErrors) {
+        console.log("## formattedErrors", formattedErrors);
+
+        formattedErrors.forEach((error) => {
+          console.log("## error:", error);
+          notify(error.message, "error");
+        });
+      }
+
+      notify(data.error.message, "error");
     }
   };
 
