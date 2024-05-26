@@ -46,12 +46,6 @@ export const Signup = () => {
     } catch (error) {
       console.log("## error:", error);
       const { data } = error;
-
-      setError(data.error.message);
-
-      setTimeout(() => {
-        setError(null);
-      }, 1000);
     }
   };
 
@@ -61,7 +55,6 @@ export const Signup = () => {
         <div className="rounded-lg bg-white w-80 text-center p-2 h-max px-4">
           <Heading label={"Sign up"} />
           <SubHeading label={"Enter your infromation to create an account"} />
-          {error && <Error error={error} />}
           <InputBox
             placeholder="John"
             label={"First Name"}
@@ -73,12 +66,12 @@ export const Signup = () => {
             onChange={(e) => setLastName(e.target.value)}
           />
           <InputBox
-            placeholder="harkirat@gmail.com"
+            placeholder="example@domain.com"
             label={"Email"}
             onChange={(e) => setUserName(e.target.value)}
           />
           <InputBox
-            placeholder="123456"
+            placeholder="password"
             label={"Password"}
             onChange={(e) => setPassword(e.target.value)}
           />
