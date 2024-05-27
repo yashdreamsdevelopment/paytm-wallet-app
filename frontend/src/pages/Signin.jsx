@@ -51,14 +51,14 @@ export const Signin = () => {
           <Heading label={"Sign in"} />
           <SubHeading label={"Enter your credentials to access your account"} />
           <InputBox
-            placeholder="harkirat@gmail.com"
+            placeholder="example@example.com"
             label={"Email"}
             onChange={(e) => {
               setUserName(e.target.value);
             }}
           />
           <InputBox
-            placeholder="123456"
+            placeholder="password"
             label={"Password"}
             onChange={(e) => {
               setPassword(e.target.value);
