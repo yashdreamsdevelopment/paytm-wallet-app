@@ -1,10 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { ToastContext } from "../context/toast/ToastContext";
-import { useLazyGenerateReferralQuery } from "../store/services/user/user.api";
+import {
+  useLazyGenerateReferralQuery,
+  useGetUserReferralsQuery,
+} from "../store/services/user/user.api";
 import { CLIENT_BASE_URL } from "../constants/api.constants";
 import { useSelector } from "react-redux";
 import protectRoute from "../utility/protectRoute";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useRevalidator } from "react-router-dom";
 
 const GenerateReferralPage = () => {
   // CONSTANTs
@@ -15,30 +18,36 @@ const GenerateReferralPage = () => {
 
   // APIs
   const [generateReferralAPI] = useLazyGenerateReferralQuery();
+  const {
+    data: userReferralsData,
+    isLoading: isUserReferralsLoading,
+    isSuccess: isUserReferralSuccess,
+  } = useGetUserReferralsQuery();
 
   // STATEs
   const [referralLink, setReferralLink] = useState("");
   const [showLink, setShowLink] = useState(false);
-  const users = [
-    { id: 1, name: "John Doe" },
-    { id: 2, name: "Jane Smith" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 3, name: "Alice Johnson" },
-    // Add more users as needed
-    { id: 3, name: "Alice Johnson" },
-  ];
+  const [users, setUsers] = useState([]);
+  // const users = [
+  //   { id: 1, name: "John Doe" },
+  //   { id: 2, name: "Jane Smith" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   { id: 3, name: "Alice Johnson" },
+  //   // Add more users as needed
+  //   { id: 3, name: "Alice Johnson" },
+  // ];
 
   // FUNCTIONs
   const generateReferralLink = async () => {
@@ -68,7 +77,14 @@ const GenerateReferralPage = () => {
     if (!userId) {
       handleProtectedRouteNavigation("/signin");
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    if (isUserReferralSuccess) {
+      console.log("## user referrals:", userReferralsData);
+      setUsers(userReferralsData.data);
+    }
+  }, [isUserReferralsLoading]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -83,10 +99,12 @@ const GenerateReferralPage = () => {
             <ul className="space-y-4">
               {users.map((user) => (
                 <li
-                  key={user.id}
+                  key={user._id}
                   className="p-4 bg-gray-100 rounded-lg shadow-sm"
                 >
-                  <p className="text-lg font-medium">{user.name}</p>
+                  <p className="text-lg font-medium">
+                    {user?.referredUserId?.firstName || "A-user"}
+                  </p>
                 </li>
               ))}
             </ul>
