@@ -50,6 +50,14 @@ export const userServiceApi = userApi.injectEndpoints({
         },
       }),
     }),
+    getUserReferrals: builder.query({
+      query: () => ({
+        url: "/referrals",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -61,4 +69,5 @@ export const {
   useLazySearchUserQuery,
   useLazyGenerateReferralQuery,
   useGetUserDataQuery,
+  useGetUserReferralsQuery,
 } = userServiceApi;
