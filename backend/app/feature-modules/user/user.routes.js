@@ -12,6 +12,9 @@ const referralService = require("../referral/referral.service");
 const { ResponseHandler } = require("../../utility/response-handler");
 const { authMiddleware } = require("../auth/auth.middleware");
 const { USER_RESPONSE } = require("./user.response");
+const ReferralModel = require("../../models/referral/Referral.model");
+const UserModel = require("../../models/user/User.model");
+const mongoose = require("mongoose");
 
 const router = Router();
 
@@ -23,7 +26,7 @@ router.post("/signup", ValidateSignupReqFields, async (req, res, next) => {
   try {
     const user = req.body;
     const referrerUserId = req.referrerUserId;
-    // console.log("## referrerUserId:", referrerUserId);
+    const referralId = req.referralId;
 
     let referrerUser = undefined;
 
@@ -55,7 +58,7 @@ router.post("/signup", ValidateSignupReqFields, async (req, res, next) => {
     // update the referral db
     if (referrerUser) {
       await referralService.update(
-        { referrerUserId: referrerUserId },
+        { _id: referralId },
         { referredUserId: result.userId }
       );
 
@@ -152,11 +155,12 @@ router.get("/generateReferral", authMiddleware, async (req, res, next) => {
 
     const result = await referralService.create(referralDetails);
 
-    const referralLink = `http://localhost:3000/api/v1/user/signin?referredBy=${referralCode}`;
+    const referralLink = `http://localhost:3000/api/v1/user/signin?referredBy=${referralCode}&referralId=${result._id}`;
     res.status(200).send({
       success: true,
       message: "Referral router ok",
       referralCode,
+      referralId: result._id,
       link: referralLink,
     });
   } catch (err) {
@@ -168,9 +172,9 @@ router.get("/referrals", authMiddleware, async (req, res, next) => {
   try {
     const userId = req.userId;
 
-    const result = await referralService.getUserReferrals({
+    const result = await ReferralModel.find({
       referrerUserId: userId,
-    });
+    }).populate("referredUserId", "userName firstName lastName");
 
     res.status(200).send({
       success: true,

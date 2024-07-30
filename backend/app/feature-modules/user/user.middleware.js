@@ -8,8 +8,7 @@ const authService = require("../auth/auth.service");
 const ValidateSignupReqFields = (req, res, next) => {
   const validationResp = signupBodySchema.safeParse(req.body);
   const referredByToken = req.query.referredBy || null;
-
-  // console.log("## referredByToken:", referredByToken);
+  const referralId = req.query.referralId || null;
 
   if (!validationResp.success) {
     const errors = validationResp.error.issues;
@@ -29,6 +28,7 @@ const ValidateSignupReqFields = (req, res, next) => {
       // console.log("## referrerUserId:", referrerUserId);
 
       req.referrerUserId = referrerUserId;
+      req.referralId = referralId;
       next();
     } catch (err) {
       throw { ...err, message: "Not a valid referrer" };
