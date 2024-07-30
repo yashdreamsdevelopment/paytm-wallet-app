@@ -5,6 +5,8 @@ import Dashboard from "./pages/Dashboard";
 import SendMoney from "./pages/SendMoney";
 import { withToastProvider } from "./context/toast/ToastContext";
 import GenerateReferralPage from "./pages/GenerateReferral";
+import Transactions from "./pages/Transactions";
+import Appbar from "./components/Appbar";
 
 const App = () => {
   return (
@@ -16,6 +18,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/send" element={<SendMoney />} />
           <Route path="/referr" element={<GenerateReferralPage />} />
+          <Route path="/transactions" element={<Transactions />} />
         </Routes>
       </BrowserRouter>
     </>
