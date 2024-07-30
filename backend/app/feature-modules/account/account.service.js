@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
 const AccountModel = require("../../models/account/Account.model");
+const TransactionModel = require("../../models/account/Transaction.model");
 const { ACCOUNT_RESPONSE } = require("./account.response");
 
 const create = (accountDetails) => AccountModel.create(accountDetails);
+
+const recordTransaction = (data) => TransactionModel.create(data);
 
 const get = (filter) => AccountModel.findOne(filter);
 
@@ -36,9 +39,17 @@ const performTransfer = async (userId, to, amount) => {
 
     await update({ userId: to }, { $inc: { balance: amount } }, session);
 
+    await recordTransaction({
+      to: to,
+      from: userId,
+      amount: amount,
+      type: "DR",
+    });
+
     await session.commitTransaction();
     await session.endSession();
 
+    // return true;
     // return;
   } catch (err) {
     await session.abortTransaction();
