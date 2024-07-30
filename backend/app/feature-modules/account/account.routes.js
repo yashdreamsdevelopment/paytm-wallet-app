@@ -49,6 +49,23 @@ router.post(
   }
 );
 
+router.get("/transactions-history", authMiddleware, async (req, res, next) => {
+  try {
+    const userId = req.userId;
+
+    const transactionsListResult = await accountService
+      .getTransactions(userId)
+      .populate("to", "firstName lastName");
+
+    res.status(ACCOUNT_RESPONSE.TRANSFER_SUCCESSFUL.statusCode).send({
+      success: true,
+      data: transactionsListResult,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 const accountRouter = new Route("/account", router);
 
 module.exports = accountRouter;

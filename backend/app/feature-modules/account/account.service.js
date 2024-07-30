@@ -46,6 +46,13 @@ const performTransfer = async (userId, to, amount) => {
       type: "DR",
     });
 
+    await recordTransaction({
+      to: userId,
+      from: to,
+      amount: amount,
+      type: "CR",
+    });
+
     await session.commitTransaction();
     await session.endSession();
 
@@ -59,9 +66,18 @@ const performTransfer = async (userId, to, amount) => {
   }
 };
 
+const getTransactions = (fromId) => {
+  return TransactionModel.find({ from: fromId });
+  // .populate(
+  //   "to",
+  //   "firstName lastName"
+  // );
+};
+
 module.exports = {
   create,
   get,
   update,
   performTransfer,
+  getTransactions,
 };

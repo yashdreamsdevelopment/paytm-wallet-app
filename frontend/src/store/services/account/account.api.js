@@ -13,6 +13,9 @@ export const accountServiceApi = accountApi.injectEndpoints({
         body: data,
       }),
     }),
+    getTransactions: builder.query({
+      query: () => "/transactions-history",
+    }),
   }),
 });
 
@@ -20,4 +23,5 @@ export const {
   useGetAccountBalanceQuery,
   useTransferAmountMutation,
   useLazyGetAccountBalanceQuery,
+  useGetTransactionsQuery,
 } = accountServiceApi;
