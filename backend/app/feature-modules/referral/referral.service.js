@@ -10,7 +10,7 @@ const update = (filter, updatedData) =>
   ReferralModel.updateOne(filter, updatedData, { new: true });
 
 const getUserReferrals = (filter) =>
-  ReferralModel.find(filter).populate("referredUserId");
+  ReferralModel.find(filter).populate("referredUserId", "firstName lastName");
 
 module.exports = {
   create,
