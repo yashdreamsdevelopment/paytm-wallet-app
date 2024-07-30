@@ -22,6 +22,7 @@ const GenerateReferralPage = () => {
     data: userReferralsData,
     isLoading: isUserReferralsLoading,
     isSuccess: isUserReferralSuccess,
+    refetch,
   } = useGetUserReferralsQuery();
 
   // STATEs
@@ -55,15 +56,15 @@ const GenerateReferralPage = () => {
       const resp = await generateReferralAPI().unwrap();
 
       if (resp.success) {
-        const { referralCode } = resp;
+        const { referralCode, referralId } = resp;
 
-        const newReferralLink = `${CLIENT_BASE_URL}/signup?referredBy=${referralCode}`;
+        const newReferralLink = `${CLIENT_BASE_URL}/signup?referredBy=${referralCode}&referralId=${referralId}`;
 
         setReferralLink(newReferralLink);
         setShowLink(true);
       }
     } catch (error) {
-      notify("something went wrong", "error");
+      notify("something went wrong", error);
     }
   };
 
@@ -76,6 +77,8 @@ const GenerateReferralPage = () => {
   useEffect(() => {
     if (!userId) {
       handleProtectedRouteNavigation("/signin");
+    } else {
+      refetch();
     }
   }, []);
 
@@ -103,7 +106,10 @@ const GenerateReferralPage = () => {
                   className="p-4 bg-gray-100 rounded-lg shadow-sm"
                 >
                   <p className="text-lg font-medium">
-                    {user?.referredUserId?.firstName || "A-user"}
+                    {user?.referredUserId?.firstName.concat(
+                      " ",
+                      user.referredUserId?.lastName
+                    )}
                   </p>
                 </li>
               ))}
