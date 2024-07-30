@@ -32,10 +32,19 @@ export const Signup = () => {
         lastName,
         password,
       };
-      const referredBy = searchParams.get("referredBy");
+      const referredBy = searchParams.has("referredBy")
+        ? searchParams.get("referredBy")
+        : null;
+      const referralId = searchParams.has("referralId")
+        ? searchParams.get("referralId")
+        : null;
 
-      console.log("## referredBy:", referredBy);
-      const resp = await createUserAPI({ bdata, referredBy }).unwrap();
+      console.log("## referredBy:", referredBy, typeof referredBy);
+      const resp = await createUserAPI({
+        bdata,
+        referredBy,
+        referralId,
+      }).unwrap();
 
       const { data } = resp;
 

@@ -4,12 +4,17 @@ export const userServiceApi = userApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
     createUser: builder.mutation({
-      query: ({ bdata, referredBy }) => ({
-        url: "/signup",
-        params: { referredBy },
-        method: "POST",
-        body: bdata,
-      }),
+      query: ({ bdata, referredBy, referralId }) => {
+        referralId = referralId ? referralId : "";
+        referredBy = referredBy ? referredBy : "";
+
+        return {
+          url: `/signup`,
+          params: { referredBy, referralId },
+          method: "POST",
+          body: bdata,
+        };
+      },
     }),
     loginUser: builder.mutation({
       query: (data) => ({
