@@ -1,13 +1,13 @@
-const { Schema, model } = require("mongoose");
+const Mongoose = require("mongoose");
 
-const referralSchema = new Schema({
+const referralSchema = new Mongoose.Schema({
   referrerUserId: {
-    type: Schema.Types.ObjectId,
+    type: Mongoose.Types.ObjectId,
     ref: "User",
     required: true,
   },
   referredUserId: {
-    type: Schema.Types.ObjectId,
+    type: Mongoose.Types.ObjectId,
     ref: "User",
   },
   referralCode: {
@@ -15,6 +15,6 @@ const referralSchema = new Schema({
   },
 });
 
-const ReferralModel = model("Referral", referralSchema);
+const ReferralModel = Mongoose.model("Referral", referralSchema);
 
 module.exports = ReferralModel;
