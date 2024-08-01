@@ -8,6 +8,7 @@ import { debounce } from "../utility/debounce";
 import { setTransferToUserData } from "../store/features/user/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Avatar from "./Avatar";
 
 const Users = () => {
   const {
@@ -73,8 +74,8 @@ const Users = () => {
         ></input>
       </div>
       <div>
-        {users.map((user) => (
-          <User user={user} />
+        {users.map((user, id) => (
+          <User key={id} user={user} />
         ))}
       </div>
     </>
@@ -92,13 +93,9 @@ const User = ({ user }) => {
   };
 
   return (
-    <div className="flex justify-between">
-      <div className="flex">
-        <div className="rounded-full h-12 w-12 bg-slate-200 flex justify-center mt-1 mr-2">
-          <div className="flex flex-col justify-center h-full text-xl">
-            {user?.firstName[0]?.toUpperCase()}
-          </div>
-        </div>
+    <div className="flex align-middle justify-between">
+      <div className="flex align-middle">
+        <Avatar contents={[user?.firstName, user?.lastName]} />
         <div className="flex flex-col justify-center h-ful">
           <div>
             {user?.firstName} {user?.lastName}

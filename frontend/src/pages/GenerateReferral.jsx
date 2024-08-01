@@ -78,7 +78,7 @@ const GenerateReferralPage = () => {
     if (!userId) {
       handleProtectedRouteNavigation("/signin");
     } else {
-      refetch();
+      // refetch();
     }
   }, []);
 
@@ -90,7 +90,7 @@ const GenerateReferralPage = () => {
   }, [isUserReferralsLoading]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+    <>
       <h1 className="text-3xl font-bold mb-6">
         Referred Users and Generate Referral Link
       </h1>
@@ -151,7 +151,7 @@ const GenerateReferralPage = () => {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -9,6 +9,7 @@ import { setUserData } from "../store/features/user/userSlice";
 import { setAccountBalance } from "../store/features/account/accountSlice";
 import protectRoute from "../utility/protectRoute";
 import { ToastContext } from "../context/toast/ToastContext";
+import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
   const userId = useSelector((state) => state.user.userId);
@@ -60,10 +61,12 @@ const Dashboard = () => {
 
   return (
     <div>
-      <Appbar />
+      {/* <Appbar /> */}
       <div className="m-8">
         <Balance value={account.accountBalance.balance} />
         <Users />
+
+        <Outlet />
       </div>
     </div>
   );

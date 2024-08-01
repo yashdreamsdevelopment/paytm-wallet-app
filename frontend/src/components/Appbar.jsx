@@ -28,13 +28,13 @@ const Appbar = () => {
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
               <Link
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                to="/referr"
+                to="referr-a-friend"
               >
                 Your Referrals
               </Link>
               <Link
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                to="/transactions"
+                to="transactions"
               >
                 Your Transactions
               </Link>
