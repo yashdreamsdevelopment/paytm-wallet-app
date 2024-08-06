@@ -6,6 +6,8 @@ const create = (referralData) => {
 
 const get = (filter) => ReferralModel.findOne(filter);
 
+const getAll = (filter) => ReferralModel.find(filter);
+
 const update = (filter, updatedData) =>
   ReferralModel.updateOne(filter, updatedData, { new: true });
 
@@ -16,5 +18,6 @@ module.exports = {
   create,
   update,
   get,
+  getAll,
   getUserReferrals,
 };

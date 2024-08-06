@@ -7,11 +7,14 @@ import {
 import { CLIENT_BASE_URL } from "../constants/api.constants";
 import { useSelector } from "react-redux";
 import protectRoute from "../utility/protectRoute";
-import { useNavigate, useRevalidator } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Reload from "../components/Reload";
 
 const GenerateReferralPage = () => {
   // CONSTANTs
   const userId = useSelector((state) => state.user.userId);
+  const userData = useSelector((state) => state.user.userData);
+
   const { notify } = useContext(ToastContext);
   const { handleProtectedRouteNavigation } = protectRoute();
   const navigate = useNavigate();
@@ -29,36 +32,16 @@ const GenerateReferralPage = () => {
   const [referralLink, setReferralLink] = useState("");
   const [showLink, setShowLink] = useState(false);
   const [users, setUsers] = useState([]);
-  // const users = [
-  //   { id: 1, name: "John Doe" },
-  //   { id: 2, name: "Jane Smith" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   { id: 3, name: "Alice Johnson" },
-  //   // Add more users as needed
-  //   { id: 3, name: "Alice Johnson" },
-  // ];
 
   // FUNCTIONs
   const generateReferralLink = async () => {
     try {
-      const resp = await generateReferralAPI().unwrap();
+      // const resp = await generateReferralAPI().unwrap();
 
-      if (resp.success) {
-        const { referralCode, referralId } = resp;
+      if (true) {
+        // const { referralCode, referralId } = resp;
 
-        const newReferralLink = `${CLIENT_BASE_URL}/signup?referredBy=${referralCode}&referralId=${referralId}`;
+        const newReferralLink = `${CLIENT_BASE_URL}/signup?referredBy=${userData?.referralCode}`;
 
         setReferralLink(newReferralLink);
         setShowLink(true);
@@ -85,7 +68,7 @@ const GenerateReferralPage = () => {
   useEffect(() => {
     if (isUserReferralSuccess) {
       console.log("## user referrals:", userReferralsData);
-      setUsers(userReferralsData.data);
+      setUsers(userReferralsData?.data?.referredUsers);
     }
   }, [isUserReferralsLoading]);
 
@@ -97,19 +80,19 @@ const GenerateReferralPage = () => {
       <div className="flex flex-row w-full max-w-5xl bg-white shadow-md rounded-lg">
         {/* Left Column: User List */}
         <div className="w-1/2 p-6 border-r border-gray-200  ">
-          <h2 className="text-2xl font-semibold mb-4">User List</h2>
+          <h2 className="text-2xl font-semibold mb-4">
+            User List
+            <Reload cb={refetch} />
+          </h2>
           <div className="overflow-y-auto h-96">
             <ul className="space-y-4">
-              {users.map((user) => (
+              {users?.map((user) => (
                 <li
                   key={user._id}
                   className="p-4 bg-gray-100 rounded-lg shadow-sm"
                 >
                   <p className="text-lg font-medium">
-                    {user?.referredUserId?.firstName.concat(
-                      " ",
-                      user.referredUserId?.lastName
-                    )}
+                    {user?.firstName.concat(" ", user?.lastName)}
                   </p>
                 </li>
               ))}

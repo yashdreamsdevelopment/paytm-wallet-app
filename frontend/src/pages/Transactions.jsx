@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useGetTransactionsQuery } from "../store/services/account/account.api";
 import Avatar from "../components/Avatar";
+import Reload from "../components/Reload";
 
 const Transactions = () => {
   const { data, isLoading, isSuccess, refetch } = useGetTransactionsQuery();
@@ -8,7 +9,6 @@ const Transactions = () => {
   const [transactionsList, setTransactionsList] = useState([]);
 
   useEffect(() => {
-    refetch();
     if (isSuccess) {
       setTransactionsList(data.data);
     }
@@ -18,6 +18,7 @@ const Transactions = () => {
     <>
       <h2 className="text-3xl font-bold text-gray-800 mb-6">
         Transaction List
+        <Reload cb={refetch} />
       </h2>
       <div className="space-y-6">
         {transactionsList?.map((transaction) => (

@@ -7,6 +7,9 @@ const createHash = (plainTextPassword) =>
 
 const get = (filter) => UserModel.findOne(filter);
 
+const getReferredUsers = (filter) =>
+  UserModel.findOne(filter).populate("referredUsers");
+
 const update = (filter, updateData) => UserModel.updateOne(filter, updateData);
 
 const search = (filter) =>
@@ -34,4 +37,5 @@ module.exports = {
   get,
   update,
   search,
+  getReferredUsers,
 };

@@ -12,9 +12,6 @@ const referralService = require("../referral/referral.service");
 const { ResponseHandler } = require("../../utility/response-handler");
 const { authMiddleware } = require("../auth/auth.middleware");
 const { USER_RESPONSE } = require("./user.response");
-const ReferralModel = require("../../models/referral/Referral.model");
-const UserModel = require("../../models/user/User.model");
-const mongoose = require("mongoose");
 
 const router = Router();
 
@@ -26,7 +23,7 @@ router.post("/signup", ValidateSignupReqFields, async (req, res, next) => {
   try {
     const user = req.body;
     const referrerUserId = req.referrerUserId;
-    const referralId = req.referralId;
+    // const referralId = req.referralId;
 
     let referrerUser = undefined;
 
@@ -39,8 +36,6 @@ router.post("/signup", ValidateSignupReqFields, async (req, res, next) => {
           message: "not a valid referrer",
         };
       }
-
-      // console.log("## referrerUser:", referrerUser);
     }
 
     const result = await authService.register(user);
@@ -51,23 +46,18 @@ router.post("/signup", ValidateSignupReqFields, async (req, res, next) => {
       balance: !referrerUser ? 50 : 100,
     };
 
-    // console.log("## accountDetails:", accountDetails);
-
     await accountService.create(accountDetails);
 
     // update the referral db
     if (referrerUser) {
-      await referralService.update(
-        { _id: referralId },
-        { referredUserId: result.userId }
-      );
+      referrerUser.referredUsers.push(result.userId);
+
+      await referrerUser.save();
 
       await accountService.update(
         { userId: referrerUserId },
         { $inc: { balance: 100 } }
       );
-
-      // console.log("## updated referral db");
 
       result["message"] =
         "Your Referral amount credited to your account successfully";
@@ -171,10 +161,7 @@ router.get("/generateReferral", authMiddleware, async (req, res, next) => {
 router.get("/referrals", authMiddleware, async (req, res, next) => {
   try {
     const userId = req.userId;
-
-    const result = await ReferralModel.find({
-      referrerUserId: userId,
-    }).populate("referredUserId", "userName firstName lastName");
+    const result = await userService.getReferredUsers({ _id: userId });
 
     res.status(200).send({
       success: true,

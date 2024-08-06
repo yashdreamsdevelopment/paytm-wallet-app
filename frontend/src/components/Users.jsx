@@ -55,6 +55,8 @@ const Users = () => {
   }, [isUserDataLoading]);
 
   useEffect(() => {
+    if (!query) return;
+
     const timerId = setTimeout(() => {
       handleSearchUserApi(query);
     }, 1000);
