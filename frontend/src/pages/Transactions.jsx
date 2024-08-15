@@ -4,7 +4,8 @@ import Avatar from "../components/Avatar";
 import Reload from "../components/Reload";
 
 const Transactions = () => {
-  const { data, isLoading, isSuccess, refetch } = useGetTransactionsQuery();
+  const { data, isLoading, isSuccess, refetch, isFetching } =
+    useGetTransactionsQuery();
 
   const [transactionsList, setTransactionsList] = useState([]);
 
@@ -12,7 +13,7 @@ const Transactions = () => {
     if (isSuccess) {
       setTransactionsList(data.data);
     }
-  }, [isLoading]);
+  }, [isLoading, isFetching]);
 
   return (
     <>

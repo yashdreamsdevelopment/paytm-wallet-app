@@ -12,6 +12,7 @@ const referralService = require("../referral/referral.service");
 const { ResponseHandler } = require("../../utility/response-handler");
 const { authMiddleware } = require("../auth/auth.middleware");
 const { USER_RESPONSE } = require("./user.response");
+const mongoose = require("mongoose");
 
 const router = Router();
 
@@ -116,6 +117,7 @@ router.put(
 
 router.get("/bulk", authMiddleware, async (req, res, next) => {
   const filter = req.query.filter || "";
+  const userId = req.userId;
 
   const users = await userService.search(filter);
 
@@ -123,10 +125,16 @@ router.get("/bulk", authMiddleware, async (req, res, next) => {
     throw USER_RESPONSE.USER_NOT_FOUND;
   }
 
+  const filteredUsers = users.filter((user) => {
+    if (!user._id.equals(userId)) {
+      return user;
+    }
+  });
+
   res.status(200).send({
     success: true,
     results: users.length,
-    ...new ResponseHandler(users),
+    ...new ResponseHandler(filteredUsers),
   });
 });
 
